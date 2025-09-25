@@ -254,7 +254,7 @@
             <div id="steps-display"></div>
 
             <button class="hint-button" onclick="nextEquation()" style="margin-top: 20px; background-color: #FF6F61; display: none;" id="next-button">Prochaine Équation</button>
-            <img src="https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20thumbs%20up" alt="Mascotte Robot" class="character-img" id="robot-mascot">
+            
         </div>
     </div>
 
@@ -514,7 +514,7 @@
                 stepsDisplay.textContent = "Je n'ai pas encore d'étapes détaillées pour cette équation, mais continue d'essayer !";
                 stepsDisplay.style.display = 'block';
             }
-            robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20teaching"; // Teaching robot
+            robotMascot.src = ""; // Teaching robot
         }
 
         function nextEquation() {
