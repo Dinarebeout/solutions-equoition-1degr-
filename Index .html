@@ -156,12 +156,132 @@
             background-color: #5ACAE0;
         }
 
-        .character-img {
-            max-width: 120px;
+        /* Styles pour les formes géométriques */
+        .character-shape {
             position: absolute;
             bottom: 20px;
             right: 20px;
             animation: bounce 2s infinite alternate;
+        }
+
+        .shape-container {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .robot-shape {
+            transition: all 0.3s ease;
+        }
+
+        /* Cercle - Forme par défaut (heureux) */
+        .shape-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FF6F61, #FFD180);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .shape-circle::before, .shape-circle::after {
+            content: '';
+            position: absolute;
+            background-color: #333;
+            border-radius: 50%;
+        }
+
+        .shape-circle::before {
+            width: 15px;
+            height: 15px;
+            top: 25px;
+            left: 20px;
+        }
+
+        .shape-circle::after {
+            width: 15px;
+            height: 15px;
+            top: 25px;
+            right: 20px;
+        }
+
+        .shape-circle::before, .shape-circle::after {
+            box-shadow: 0 25px 0 -5px #333;
+        }
+
+        /* Carré - Forme triste */
+        .shape-square {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #2193B0, #6DD5ED);
+            position: relative;
+            transform: rotate(45deg);
+        }
+
+        .shape-square::before, .shape-square::after {
+            content: '';
+            position: absolute;
+            background-color: #333;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .shape-square::before {
+            top: 15px;
+            left: 15px;
+        }
+
+        .shape-square::after {
+            top: 15px;
+            right: 15px;
+        }
+
+        /* Triangle - Forme confus/professeur */
+        .shape-triangle {
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 70px solid #4CAF50;
+            position: relative;
+        }
+
+        .shape-triangle::before, .shape-triangle::after {
+            content: '';
+            position: absolute;
+            background-color: #333;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .shape-triangle::before {
+            top: 15px;
+            left: -25px;
+        }
+
+        .shape-triangle::after {
+            top: 15px;
+            right: -25px;
+        }
+
+        /* Étoile - Forme célébration */
+        .shape-star {
+            width: 0;
+            height: 0;
+            color: #FFD700;
+            position: relative;
+            display: block;
+            margin: 20px 0;
+        }
+
+        .shape-star::before {
+            content: '★';
+            font-size: 80px;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         @keyframes bounce {
@@ -202,7 +322,16 @@
             #equation-display { font-size: 2em; }
             #input-area input { font-size: 1.2em; width: 80px; }
             #input-area button { font-size: 1.2em; padding: 10px 20px; }
-            .character-img { max-width: 80px; bottom: 10px; right: 10px; }
+            .character-shape { bottom: 10px; right: 10px; }
+            .shape-container { width: 80px; height: 80px; }
+            .shape-circle { width: 60px; height: 60px; }
+            .shape-square { width: 50px; height: 50px; }
+            .shape-triangle { 
+                border-left: 30px solid transparent;
+                border-right: 30px solid transparent;
+                border-bottom: 50px solid #4CAF50;
+            }
+            .shape-star::before { font-size: 60px; }
         }
     </style>
 </head>
@@ -231,7 +360,12 @@
             <button class="hint-button" onclick="showSteps()">J'ai besoin d'aide !</button>
             <div id="steps-display"></div>
 
-            <img src="https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20happy" alt="Robot Mascot" class="character-img" id="robot-mascot">
+            <!-- Forme géométrique pour le mascotte -->
+            <div class="character-shape" id="robot-mascot">
+                <div class="shape-container">
+                    <div class="robot-shape shape-circle" id="shape-element"></div>
+                </div>
+            </div>
 
             <button class="hint-button" onclick="nextEquation()" style="margin-top: 20px; background-color: #FF6F61; display: none;" id="next-button">Prochaine Équation</button>
         </div>
@@ -241,7 +375,7 @@
         let currentEquation = {};
         let currentLevel = '';
 
-        const robotMascot = document.getElementById('robot-mascot');
+        const shapeElement = document.getElementById('shape-element');
 
         const equations = {
             easy: [
@@ -272,6 +406,7 @@
             document.querySelector('.level-selection').style.display = 'none';
             document.getElementById('game-area').style.display = 'block';
             generateNewEquation();
+            setShape('circle'); // Forme par défaut
         }
 
         function generateNewEquation() {
@@ -284,8 +419,29 @@
             document.getElementById('feedback').className = '';
             document.getElementById('steps-display').style.display = 'none';
             document.getElementById('next-button').style.display = 'none';
-            if (robotMascot) {
-                robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20happy";
+            setShape('circle'); // Retour à la forme heureuse
+        }
+
+        function setShape(shapeType) {
+            // Retirer toutes les classes de forme
+            shapeElement.className = 'robot-shape';
+            
+            // Ajouter la classe correspondante
+            switch(shapeType) {
+                case 'circle': // Heureux
+                    shapeElement.classList.add('shape-circle');
+                    break;
+                case 'square': // Triste
+                    shapeElement.classList.add('shape-square');
+                    break;
+                case 'triangle': // Professeur/Confus
+                    shapeElement.classList.add('shape-triangle');
+                    break;
+                case 'star': // Célébration
+                    shapeElement.classList.add('shape-star');
+                    break;
+                default:
+                    shapeElement.classList.add('shape-circle');
             }
         }
 
@@ -297,7 +453,7 @@
             if (isNaN(userAnswer)) {
                 feedback.textContent = "Oops ! Entre un nombre valide s'il te plaît.";
                 feedback.className = 'wrong';
-                if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20confused";
+                setShape('triangle'); // Forme confus
                 return;
             }
 
@@ -305,12 +461,12 @@
                 feedback.textContent = "BRAVO ! Tu as trouvé la bonne réponse ! 🎉";
                 feedback.className = 'correct';
                 nextButton.style.display = 'block';
-                if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20celebrating";
+                setShape('star'); // Forme étoile pour célébration
                 triggerConfetti();
             } else {
                 feedback.textContent = `Ce n'est pas tout à fait ça. La bonne réponse est ${currentEquation.solution}. Ne t'inquiète pas, tu peux réessayer !`;
                 feedback.className = 'wrong';
-                if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20sad";
+                setShape('square'); // Forme triste
                 nextButton.style.display = 'block';
             }
         }
@@ -434,7 +590,6 @@
             }
         }
 
-
         function showSteps() {
             const stepsDisplay = document.getElementById('steps-display');
             stepsDisplay.innerHTML = '';
@@ -450,7 +605,7 @@
                 stepsDisplay.textContent = "Je n'ai pas d'étapes pour cette équation, mais la solution est " + currentEquation.solution;
                 stepsDisplay.style.display = 'block';
             }
-            if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20teacher";
+            setShape('triangle'); // Forme professeur
         }
 
         function nextEquation() {
