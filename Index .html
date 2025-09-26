@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math-Aventure : Les Équations du 1er Degré !</title>
+    <title>Math-Aventure : Les Équations !</title>
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -83,9 +83,9 @@
             font-weight: bold;
             color: #FF6F61;
             margin: 20px 0;
-            white-space: nowrap; /* Prevent equation from wrapping */
-            overflow: hidden; /* Hide overflow if it gets too long */
-            text-overflow: ellipsis; /* Add ellipsis if it gets too long */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         #input-area input {
@@ -118,7 +118,7 @@
             font-size: 1.3em;
             padding: 15px;
             border-radius: 10px;
-            min-height: 60px; /* Ensure consistent height */
+            min-height: 60px;
         }
 
         #feedback.correct {
@@ -137,7 +137,7 @@
             text-align: left;
             margin-top: 20px;
             border: 1px solid #FFEBA3;
-            display: none; /* Hidden by default */
+            display: none;
         }
         
         .hint-button {
@@ -184,7 +184,7 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: #f00; /* Default color */
+            background-color: #f00;
             animation: fall 3s ease-out forwards;
             opacity: 0;
         }
@@ -194,44 +194,22 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            h2 {
-                font-size: 1.5em;
-            }
-            p {
-                font-size: 1em;
-            }
-            .level-selection button {
-                padding: 10px 20px;
-                font-size: 1.1em;
-            }
-            #equation-display {
-                font-size: 2em;
-            }
-            #input-area input {
-                font-size: 1.2em;
-                width: 80px;
-            }
-            #input-area button {
-                font-size: 1.2em;
-                padding: 10px 20px;
-            }
-            .character-img {
-                max-width: 80px;
-                bottom: 10px;
-                right: 10px;
-            }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+            p { font-size: 1em; }
+            .level-selection button { padding: 10px 20px; font-size: 1.1em; }
+            #equation-display { font-size: 2em; }
+            #input-area input { font-size: 1.2em; width: 80px; }
+            #input-area button { font-size: 1.2em; padding: 10px 20px; }
+            .character-img { max-width: 80px; bottom: 10px; right: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1><span role="img" aria-label="Rocket">🚀</span> Math-Aventure : Les Équations ! <span role="img" aria-label="Star">⭐</span></h1>
-        <p>Bienvenue jeune explorateur ! Prépare-toi à résoudre des mystères mathématiques et à devenir un champion des équations du 1er degré. Choisis ton niveau et que l'aventure commence !</p>
+        <p>Bienvenue jeune explorateur ! Prépare-toi à résoudre des mystères mathématiques et à devenir un champion des équations. Choisis ton niveau et que l'aventure commence !</p>
 
         <div class="level-selection">
             <h2>Choisis ton Défi :</h2>
@@ -245,7 +223,7 @@
             <p id="equation-display"></p>
 
             <div id="input-area">
-                <input type="number" id="user-answer" placeholder="Ta réponse X = " step="any">
+                <input type="number" id="user-answer" placeholder="X = ?" step="any">
                 <button onclick="checkAnswer()">Vérifier</button>
             </div>
 
@@ -253,8 +231,9 @@
             <button class="hint-button" onclick="showSteps()">J'ai besoin d'aide !</button>
             <div id="steps-display"></div>
 
+            <img src="https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20happy" alt="Robot Mascot" class="character-img" id="robot-mascot">
+
             <button class="hint-button" onclick="nextEquation()" style="margin-top: 20px; background-color: #FF6F61; display: none;" id="next-button">Prochaine Équation</button>
-            
         </div>
     </div>
 
@@ -304,8 +283,10 @@
             document.getElementById('feedback').textContent = '';
             document.getElementById('feedback').className = '';
             document.getElementById('steps-display').style.display = 'none';
-            document.getElementById('next-button').style.display = 'none'; // Hide next button
-            robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20happy"; // Default happy robot
+            document.getElementById('next-button').style.display = 'none';
+            if (robotMascot) {
+                robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20happy";
+            }
         }
 
         function checkAnswer() {
@@ -316,21 +297,21 @@
             if (isNaN(userAnswer)) {
                 feedback.textContent = "Oops ! Entre un nombre valide s'il te plaît.";
                 feedback.className = 'wrong';
-                robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20confused"; // Confused robot
+                if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20confused";
                 return;
             }
 
             if (userAnswer === currentEquation.solution) {
                 feedback.textContent = "BRAVO ! Tu as trouvé la bonne réponse ! 🎉";
                 feedback.className = 'correct';
-                nextButton.style.display = 'block'; // Show next button
-                robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20celebrating"; // Celebrating robot
+                nextButton.style.display = 'block';
+                if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20celebrating";
                 triggerConfetti();
             } else {
-                feedback.textContent = `Ce n'est pas tout à fait ça. La bonne réponse est ${currentEquation.solution}. Ne t'inquiète pas, tu peux réessayer ou demander de l'aide !`;
+                feedback.textContent = `Ce n'est pas tout à fait ça. La bonne réponse est ${currentEquation.solution}. Ne t'inquiète pas, tu peux réessayer !`;
                 feedback.className = 'wrong';
-                robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20sad"; // Sad robot
-                nextButton.style.display = 'block'; // Allow to go to next equation even if wrong
+                if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20sad";
+                nextButton.style.display = 'block';
             }
         }
 
@@ -339,171 +320,126 @@
             const sol = equationObject.solution;
             let steps = [];
 
-            if (eq.includes('X +')) {
-                const parts = eq.split(' ');
-                const numToAdd = parseFloat(parts[2]); // The number being added to X
-                const result = parseFloat(parts[4]); // The result of the equation
-                steps.push(`On a : ${eq}`);
-                steps.push(`Pour isoler X, il faut enlever ${numToAdd} des deux côtés de l'équation.`);
-                steps.push(`${parts[0]} ${parts[1]} ${parts[2]} - ${numToAdd} = ${parts[4]} - ${numToAdd}`);
-                steps.push(`X = ${result - numToAdd}`);
-            } else if (eq.includes('X -')) {
-                const parts = eq.split(' ');
-                const numToSubtract = parseFloat(parts[2]); // The number being subtracted from X
-                const result = parseFloat(parts[4]); // The result of the equation
-                steps.push(`On a : ${eq}`);
-                steps.push(`Pour isoler X, il faut ajouter ${numToSubtract} des deux côtés de l'équation.`);
-                steps.push(`${parts[0]} ${parts[1]} ${parts[2]} + ${numToSubtract} = ${parts[4]} + ${numToSubtract}`);
-                steps.push(`X = ${result + numToSubtract}`);
-            } else if (eq.includes('X =') && eq.indexOf('X =') > 0) { // For "6 + X = 11" type
-                const parts = eq.split(' ');
-                const numToAdd = parseFloat(parts[0]);
-                const result = parseFloat(parts[4]);
-                steps.push(`On a : ${eq}`);
-                steps.push(`Pour isoler X, il faut enlever ${numToAdd} des deux côtés de l'équation.`);
-                steps.push(`${parts[0]} + X - ${numToAdd} = ${parts[4]} - ${numToAdd}`);
-                steps.push(`X = ${result - numToAdd}`);
-            }
-            else if (eq.includes('X /')) {
-                const parts = eq.split(' ');
-                const divisor = parseFloat(parts[2]);
-                const result = parseFloat(parts[4]);
-                steps.push(`On a : ${eq}`);
-                steps.push(`Pour isoler X, il faut multiplier les deux côtés par ${divisor}.`);
-                steps.push(`${parts[0]} / ${parts[2]} * ${divisor} = ${parts[4]} * ${divisor}`);
-                steps.push(`X = ${result * divisor}`);
-            }
-             else if (eq.includes('X =')) { // Simplified case like "2X = 14"
-                const parts = eq.split(' ');
-                const coefficient = parseFloat(parts[0].replace('X', ''));
-                const result = parseFloat(parts[2]);
-                steps.push(`On a : ${eq}`);
-                steps.push(`Pour trouver X, il faut diviser les deux côtés par ${coefficient}.`);
-                steps.push(`${coefficient}X / ${coefficient} = ${result} / ${coefficient}`);
-                steps.push(`X = ${result / coefficient}`);
-            } else if (eq.includes('X +') && eq.includes('=')) { // Covers cases like "2X + 1 = 10" or "5X + 7 = 22"
-                let cleanedEq = eq.replace(/\s/g, ''); // Remove all spaces
+            // Case 1: Hardest - X on both sides
+            if (eq.split('X').length - 1 > 1) { 
+                let cleanedEq = eq.replace(/\s/g, ''); 
                 let parts = cleanedEq.split('=');
-                let leftSide = parts[0];
-                let rightSide = parseFloat(parts[1]);
+                
+                const parseSide = (side) => {
+                    let x = 0, constant = 0;
+                    const terms = side.match(/([+-]?)(\d*X|\d+)/g) || [];
+                    terms.forEach(term => {
+                        if (term.includes('X')) {
+                            if (term === 'X' || term === '+X') x += 1;
+                            else if (term === '-X') x -= 1;
+                            else x += parseFloat(term.replace('X', ''));
+                        } else {
+                            constant += parseFloat(term);
+                        }
+                    });
+                    return { x, constant };
+                };
 
-                let xTerm = '';
-                let constant = 0;
+                let left = parseSide(parts[0]);
+                let right = parseSide(parts[1]);
+
+                steps.push(`On a : ${eq}`);
+                steps.push(`Regroupons les X à gauche et les nombres à droite.`);
+                
+                let finalX = left.x - right.x;
+                let finalConst = right.constant - left.constant;
+                
+                steps.push(`On déplace les termes : ${left.x}X - ${right.x}X = ${right.constant} - ${left.constant}`);
+                steps.push(`${finalX}X = ${finalConst}`);
+                steps.push(`On divise par ${finalX} : X = ${finalConst} / ${finalX}`);
+                steps.push(`X = ${sol}`);
+                return steps;
+            }
+            
+            // Case 2: Hard - Parentheses
+            else if (eq.includes('(')) {
+                const match = eq.match(/(\d+)\s*\(\s*X\s*([+-])\s*(\d+)\s*\)\s*=\s*(\d+)/);
+                if (match) {
+                    const [, coeff, op, innerNumStr, resultStr] = match;
+                    const innerNum = parseFloat(innerNumStr);
+                    const result = parseFloat(resultStr);
+                    steps.push(`On a : ${eq}`);
+                    steps.push(`D'abord, on divise les deux côtés par ${coeff}.`);
+                    steps.push(`X ${op} ${innerNum} = ${result} / ${coeff}`);
+                    const newResult = result / parseFloat(coeff);
+                    steps.push(`X ${op} ${innerNum} = ${newResult}`);
+                    steps.push(`Ensuite, on isole X.`);
+                    steps.push(`X = ${newResult} ${op === '+' ? '-' : '+'} ${innerNum}`);
+                    steps.push(`X = ${sol}`);
+                }
+                return steps;
+            }
+            
+            // Case 3: Medium - Multi-step
+            else if ((eq.includes('/') || /[2-9]X/.test(eq)) && (eq.includes('+') || eq.includes('-'))) {
+                let cleanedEq = eq.replace(/\s/g, '');
+                let parts = cleanedEq.split('=');
+                let [leftSide, rightSideNum] = [parts[0], parseFloat(parts[1])];
+
+                steps.push(`On a : ${eq}`);
 
                 if (leftSide.includes('+')) {
-                    [xTerm, constant] = leftSide.split('+');
-                    constant = parseFloat(constant);
-                    steps.push(`On a : ${eq}`);
-                    steps.push(`Première étape : Enlever le nombre tout seul (${constant}) des deux côtés.`);
-                    steps.push(`${xTerm} + ${constant} - ${constant} = ${rightSide} - ${constant}`);
-                    rightSide -= constant;
-                    steps.push(`${xTerm} = ${rightSide}`);
+                    let [xTerm, constant] = leftSide.split('+');
+                    let num = parseFloat(constant);
+                    steps.push(`On enlève ${num} des deux côtés : ${xTerm} = ${rightSideNum} - ${num}`);
+                    rightSideNum -= num;
+                    steps.push(`${xTerm} = ${rightSideNum}`);
                 } else if (leftSide.includes('-')) {
-                    [xTerm, constant] = leftSide.split('-');
-                    constant = parseFloat(constant); // This will be positive as it's the number *after* the minus
-                    steps.push(`On a : ${eq}`);
-                    steps.push(`Première étape : Ajouter le nombre tout seul (${constant}) des deux côtés.`);
-                    steps.push(`${xTerm} - ${constant} + ${constant} = ${rightSide} + ${constant}`);
-                    rightSide += constant;
-                    steps.push(`${xTerm} = ${rightSide}`);
+                    let [xTerm, constant] = leftSide.split('-');
+                    let num = parseFloat(constant);
+                    steps.push(`On ajoute ${num} des deux côtés : ${xTerm} = ${rightSideNum} + ${num}`);
+                    rightSideNum += num;
+                    steps.push(`${xTerm} = ${rightSideNum}`);
+                }
+                
+                if (leftSide.includes('/')) {
+                    const divisor = parseFloat(leftSide.split('/')[1]);
+                    steps.push(`On multiplie par ${divisor} : X = ${rightSideNum} * ${divisor}`);
                 } else {
-                    xTerm = leftSide; // No constant term, e.g., "2X"
+                    const coeff = parseFloat(leftSide.replace('X', ''));
+                    steps.push(`On divise par ${coeff} : X = ${rightSideNum} / ${coeff}`);
                 }
-                
-                let coefficient = parseFloat(xTerm.replace('X', ''));
-                steps.push(`Deuxième étape : Diviser les deux côtés par le nombre devant le X (${coefficient}).`);
-                steps.push(`${coefficient}X / ${coefficient} = ${rightSide} / ${coefficient}`);
-                steps.push(`X = ${rightSide / coefficient}`);
-            } else if (eq.includes('(') && eq.includes(')')) { // For "3(X + 2) = 15"
-                const match = eq.match(/(\d)\(X\s*([+-])\s*(\d)\)\s*=\s*(\d+)/);
-                if (match) {
-                    const coefficient = parseFloat(match[1]);
-                    const operator = match[2];
-                    const innerConstant = parseFloat(match[3]);
-                    const result = parseFloat(match[4]);
-
-                    steps.push(`On a : ${eq}`);
-                    steps.push(`Première étape : Diviser les deux côtés par le nombre devant la parenthèse (${coefficient}).`);
-                    steps.push(`${coefficient}(X ${operator} ${innerConstant}) / ${coefficient} = ${result} / ${coefficient}`);
-                    const newRight = result / coefficient;
-                    steps.push(`X ${operator} ${innerConstant} = ${newRight}`);
-
-                    if (operator === '+') {
-                        steps.push(`Deuxième étape : Enlever ${innerConstant} des deux côtés.`);
-                        steps.push(`X + ${innerConstant} - ${innerConstant} = ${newRight} - ${innerConstant}`);
-                        steps.push(`X = ${newRight - innerConstant}`);
-                    } else if (operator === '-') {
-                        steps.push(`Deuxième étape : Ajouter ${innerConstant} des deux côtés.`);
-                        steps.push(`X - ${innerConstant} + ${innerConstant} = ${newRight} + ${innerConstant}`);
-                        steps.push(`X = ${newRight + innerConstant}`);
-                    }
-                }
-            } else if (eq.includes('X +') && eq.includes('=')) { // e.g. "2X + 3 = X + 7"
-                let cleanedEq = eq.replace(/\s/g, ''); // Remove all spaces
-                let parts = cleanedEq.split('=');
-                let leftSide = parts[0];
-                let rightSide = parts[1];
-
-                steps.push(`On a : ${eq}`);
-                steps.push(`Première étape : Regrouper les X d'un côté et les nombres de l'autre.`);
-
-                // Extract X terms and constants
-                let leftX = 0, rightX = 0, leftConst = 0, rightConst = 0;
-
-                const parseSide = (side) => {
-                    let currentX = 0;
-                    let currentConst = 0;
-                    const terms = side.match(/([+-]?\d*X)|([+-]?\d+)/g); // Matches like +2X, -5, X, -X
-                    if (terms) {
-                        terms.forEach(term => {
-                            if (term.includes('X')) {
-                                if (term === 'X') currentX += 1;
-                                else if (term === '-X') currentX -= 1;
-                                else currentX += parseFloat(term.replace('X', ''));
-                            } else {
-                                currentConst += parseFloat(term);
-                            }
-                        });
-                    }
-                    return { x: currentX, constant: currentConst };
-                };
-                
-                let parsedLeft = parseSide(leftSide);
-                let parsedRight = parseSide(rightSide);
-
-                leftX = parsedLeft.x;
-                leftConst = parsedLeft.constant;
-                rightX = parsedRight.x;
-                rightConst = parsedRight.constant;
-
-                // Move X terms to left, constants to right
-                steps.push(`On enlève ${rightX}X des deux côtés :`);
-                steps.push(`${leftX}X - ${rightX}X + ${leftConst} = ${rightX}X - ${rightX}X + ${rightConst}`);
-                leftX -= rightX;
-                steps.push(`${leftX}X + ${leftConst} = ${rightConst}`);
-
-                steps.push(`On enlève ${leftConst} des deux côtés :`);
-                steps.push(`${leftX}X + ${leftConst} - ${leftConst} = ${rightConst} - ${leftConst}`);
-                rightConst -= leftConst;
-                steps.push(`${leftX}X = ${rightConst}`);
-
-                steps.push(`Enfin, on divise par ${leftX} pour trouver X :`);
-                steps.push(`X = ${rightConst} / ${leftX}`);
-                steps.push(`X = ${rightConst / leftX}`);
-
-            } else {
-                steps.push("Désolé, je ne peux pas encore donner les étapes pour ce type d'équation. Mais la solution est : X = " + sol);
+                steps.push(`X = ${sol}`);
+                return steps;
             }
 
-            return steps;
+            // Case 4: Easy - Basic operations
+            else {
+                const parts = eq.split(' ');
+                steps.push(`On a : ${eq}`);
+                if (eq.includes('+')) {
+                    const num = parts[0] === 'X' ? parseFloat(parts[2]) : parseFloat(parts[0]);
+                    steps.push(`Pour isoler X, on soustrait ${num} des deux côtés.`);
+                    steps.push(`X = ${parts[4]} - ${num}`);
+                } else if (eq.includes('-')) {
+                    const num = parseFloat(parts[2]);
+                    steps.push(`Pour isoler X, on ajoute ${num} des deux côtés.`);
+                    steps.push(`X = ${parts[4]} + ${num}`);
+                } else if (/[0-9]X/.test(eq)) {
+                     const coeff = parseFloat(parts[0].replace('X',''));
+                     steps.push(`Pour isoler X, on divise les deux côtés par ${coeff}.`);
+                     steps.push(`X = ${parts[2]} / ${coeff}`);
+                } else if (eq.includes('/')) {
+                    const divisor = parseFloat(parts[2]);
+                    steps.push(`Pour isoler X, on multiplie les deux côtés par ${divisor}.`);
+                    steps.push(`X = ${parts[4]} * ${divisor}`);
+                }
+                steps.push(`X = ${sol}`);
+                return steps;
+            }
         }
 
 
         function showSteps() {
             const stepsDisplay = document.getElementById('steps-display');
-            stepsDisplay.innerHTML = ''; // Clear previous steps
+            stepsDisplay.innerHTML = '';
             const steps = getSteps(currentEquation);
-            if (steps.length > 0) {
+            if (steps && steps.length > 0) {
                 steps.forEach((step, index) => {
                     const p = document.createElement('p');
                     p.textContent = `${index + 1}. ${step}`;
@@ -511,10 +447,10 @@
                 });
                 stepsDisplay.style.display = 'block';
             } else {
-                stepsDisplay.textContent = "Je n'ai pas encore d'étapes détaillées pour cette équation, mais continue d'essayer !";
+                stepsDisplay.textContent = "Je n'ai pas d'étapes pour cette équation, mais la solution est " + currentEquation.solution;
                 stepsDisplay.style.display = 'block';
             }
-            robotMascot.src = ""; // Teaching robot
+            if (robotMascot) robotMascot.src = "https://image.pollinations.ai/prompt/cute%20cartoon%20robot%20teacher";
         }
 
         function nextEquation() {
